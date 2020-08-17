@@ -40,8 +40,8 @@ include("uilang.php");
         <meta http-equiv="Expires" content="0" />
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-		<link rel="icon" href="favicon.ico" type="image/x-icon">
+		<link rel="shortcut icon" href="<?php echo $baseurl ?>favicon.ico" type="image/x-icon">
+		<link rel="icon" href="<?php echo $baseurl ?>favicon.ico" type="image/x-icon">
 		
 		<script
           src="https://code.jquery.com/jquery-3.4.1.min.js"
@@ -63,10 +63,10 @@ include("uilang.php");
 				if($logo != "")
 					$currentlogo = "pictures/" . $logo;
 				?>
-				<a href="index.php"><img src="<?php echo $baseurl . $currentlogo ?>" style="height: 48px;"></a>
+				<a href="<?php echo $baseurl ?>"><img src="<?php echo $baseurl . $currentlogo ?>" style="height: 48px;"></a>
 			</div>
 			<div class="inlinecenterblock" style="color: <?php echo $maincolor ?>; font-weight: bold;">
-				<h1 style="margin: 0px; font-size: 25px;"><a href="index.php"><?php echo $websitetitle ?></a></h1>
+				<h1 style="margin: 0px; font-size: 25px;"><a href="<?php echo $baseurl ?>"><?php echo $websitetitle ?></a></h1>
 			</div>
 			<div class="inlinecenterblock" style="float: right;" onclick="togglesearch()">
 				<div class="searchbutton"><i class="fa fa-search"></i></div>
@@ -101,7 +101,7 @@ include("uilang.php");
 							}
 
 							?>
-							<a href="?post=<?php echo $vidrow["postid"] ?>">
+							<a href="<?php echo $baseurl ?>?post=<?php echo $vidrow["postid"] ?>">
 								<div class="filmblock" style="background: url(<?php echo $baseurl . $imagefile ?>) no-repeat center center; background-size: cover; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover;">
 									<div style="position: absolute; bottom: 0; left: 0; right: 0; text-align: center; background-color: rgba(0,0,0,.5); padding: 10px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;">
 										<h2 style="font-size: 14px;"><?php echo shorten_text($vidrow["title"], 18, ' ...', false) ?></h2>
@@ -153,7 +153,7 @@ include("uilang.php");
 								}
 
 								?>
-								<a href="?post=<?php echo $vidrow["postid"] ?>">
+								<a href="<?php echo $baseurl ?>?post=<?php echo $vidrow["postid"] ?>">
 									<div class="filmblock" style="background: url(<?php echo $baseurl . $imagefile ?>) no-repeat center center; background-size: cover; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover;">
 										<div style="position: absolute; bottom: 0; left: 0; right: 0; text-align: center; background-color: rgba(0,0,0,.5); padding: 10px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;">
 											<h2 style="font-size: 14px;"><?php echo shorten_text($vidrow["title"], 18, ' ...', false) ?></h2>
@@ -202,7 +202,7 @@ include("uilang.php");
 								<div id="productpic" style="background: url(<?php echo $picture ?>) no-repeat center center; background-size: cover; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover;"></div>
 								
 								<h1><?php echo $row["title"] ?></h1>
-								<h5 style="color: <?php echo $maincolor ?>"><i class="fa fa-calendar" style="width: 15px;"></i> <?php echo $postdate ?> <a href="?category=<?php echo urlencode(showcatname($row["catid"])) ?>"><i class="fa fa-tag" style="margin-left: 15px; width: 15px;"></i> <?php echo showCatName($row["catid"]) ?></a></h5>
+								<h5 style="color: <?php echo $maincolor ?>"><i class="fa fa-calendar" style="width: 15px;"></i> <?php echo $postdate ?> <a href="<?php echo $baseurl ?>?category=<?php echo urlencode(showcatname($row["catid"])) ?>"><i class="fa fa-tag" style="margin-left: 15px; width: 15px;"></i> <?php echo showCatName($row["catid"]) ?></a></h5>
 								<div>
 									<?php echo $row["content"] ?>
 								</div>
@@ -244,7 +244,7 @@ include("uilang.php");
 						if(mysqli_num_rows($result) > 0){
 							while($row = mysqli_fetch_assoc($result)){
 								?>
-								<a href="?post=<?php echo $row["postid"] ?>">
+								<a href="<?php echo $baseurl ?>?post=<?php echo $row["postid"] ?>">
 									<div class="randomvidblock">
 										<?php
 										$imagefile = $row["picture"];
@@ -301,7 +301,7 @@ include("uilang.php");
 								?>
 								
 								<div class="firstthreeblock" style="background: url(<?php echo $baseurl . $imagefile ?>) no-repeat center center; background-size: cover; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover;">
-									<a href="?post=<?php echo $row["postid"] ?>">
+									<a href="<?php echo $baseurl ?>?post=<?php echo $row["postid"] ?>">
 										<div style="display: table; width: 100%; height: 100%; background-color: rgba(0,0,0,.25); padding: 40px; box-sizing: border-box; border-radius: 20px;">
 											<div class="smallinmobile w75">
 												<h2><?php echo shorten_text($row["title"], 21, ' ...', true) ?></h2>
@@ -337,7 +337,7 @@ include("uilang.php");
 							<div class="section">
 								<div class="catseparator">
 									<div style="display: inline-block;"><h1 style="font-size: 21px;"><i class="fa fa-tag" style="color: <?php echo $maincolor ?>;"></i> <?php echo $category ?></h1></div>
-									<div style="display: inline-block; float: right; margin-top: 8px; color: <?php echo $maincolor ?>;"><a class="moreoncat" href="?category=<?php echo urlencode($category) ?>"><?php echo uilang("More in") . " " . $category ?> <i class="fa fa-plus-circle"></i></a></div>
+									<div style="display: inline-block; float: right; margin-top: 8px; color: <?php echo $maincolor ?>;"><a class="moreoncat" href="<?php echo $baseurl ?>?category=<?php echo urlencode($category) ?>"><?php echo uilang("More in") . " " . $category ?> <i class="fa fa-plus-circle"></i></a></div>
 								</div>
 							</div>
 							<div class="section gridcontainer">
@@ -351,7 +351,7 @@ include("uilang.php");
 									}
 
 									?>
-									<a href="?post=<?php echo $vidrow["postid"] ?>">
+									<a href="<?php echo $baseurl ?>?post=<?php echo $vidrow["postid"] ?>">
 										<div class="filmblock" style="background: url(<?php echo $baseurl . $imagefile ?>) no-repeat center center; background-size: cover; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover;">
 											<div style="position: absolute; bottom: 0; left: 0; right: 0; text-align: center; background-color: rgba(0,0,0,.5); padding: 10px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; color: white;">
 												<h2 style="font-size: 14px;"><?php echo shorten_text($vidrow["title"], 18, ' ...', false) ?></h2>
@@ -398,7 +398,7 @@ include("uilang.php");
 						echo "<ul>";
 						while($row = mysqli_fetch_assoc($result)){
 							?>
-							<li><a href="?post=<?php echo $row["postid"] ?>"><i class="fa fa-circle" style="color: <?php echo $maincolor ?>; width: 20px;"></i> <?php echo $row["title"] ?></a></li>
+							<li><a href="<?php echo $baseurl ?>?post=<?php echo $row["postid"] ?>"><i class="fa fa-circle" style="color: <?php echo $maincolor ?>; width: 20px;"></i> <?php echo $row["title"] ?></a></li>
 							<?php
 						}
 						echo "</ul>";
@@ -419,7 +419,7 @@ include("uilang.php");
 					if(mysqli_num_rows($result) > 0){
 						while($row = mysqli_fetch_assoc($result)){
 							?>
-							<div class="categoryblock"><a href="?category=<?php echo urlencode($row["category"]) ?>"><i class="fa fa-tag" style="width: 10px;"></i> <?php echo $row["category"] ?></a></div>
+							<div class="categoryblock"><a href="<?php echo $baseurl ?>?category=<?php echo urlencode($row["category"]) ?>"><i class="fa fa-tag" style="width: 10px;"></i> <?php echo $row["category"] ?></a></div>
 							<?php
 						}
 					}else{
@@ -464,7 +464,7 @@ include("uilang.php");
 			function startsearch(){
 				clearTimeout(searchtimeout)
 				searchtimeout = setTimeout(function(){
-					location.href = "?search=" + encodeURI($("#searchinput").val())
+					location.href = "<?php echo $baseurl ?>?search=" + encodeURI($("#searchinput").val())
 				}, 2000)
 			}
 		</script>

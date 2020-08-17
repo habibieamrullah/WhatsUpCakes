@@ -18,15 +18,15 @@ include("uilang.php");
         <meta http-equiv="Expires" content="0" />
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-		<link rel="icon" href="favicon.ico" type="image/x-icon">
+		<link rel="shortcut icon" href="<?php echo $baseurl ?>favicon.ico" type="image/x-icon">
+		<link rel="icon" href="<?php echo $baseurl ?>favicon.ico" type="image/x-icon">
 		<script
           src="https://code.jquery.com/jquery-3.4.1.min.js"
           integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
           crossorigin="anonymous"></script>
         <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@300&display=swap" rel="stylesheet">
 		
-		<link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css">
+		<link rel="stylesheet" type="text/css" href="<?php echo $baseurl ?>assets/css/font-awesome.css">
 		
 		<script src="tinymce/tinymce.min.js"></script>
 		<script>
@@ -81,13 +81,13 @@ include("uilang.php");
 									if($logo != "")
 										$currentlogo = "pictures/" . $logo;
 									?>
-									<a href="admin.php"><img src="<?php echo $currentlogo ?>" style="display: border-box; width: 100%;"></a>
+									<a href="<?php echo $baseurl ?>admin.php"><img src="<?php echo $currentlogo ?>" style="display: border-box; width: 100%;"></a>
 								</div>
-								<a href="admin.php"><div class="adminleftbaritem"><i class="fa fa-home" style="width: 30px;"></i> <?php echo uilang("Home") ?></div></a>
-								<a href="?newpost"><div class="adminleftbaritem"><i class="fa fa-plus" style="width: 30px;"></i> <?php echo uilang("New Post") ?></div></a>
-								<a href="?categories"><div class="adminleftbaritem"><i class="fa fa-tag" style="width: 30px;"></i> <?php echo uilang("Categories") ?></div></a>
-								<a href="?settings"><div class="adminleftbaritem"><i class="fa fa-cogs" style="width: 30px;"></i> <?php echo uilang("Settings") ?></div></a>
-								<a href="?logout"><div class="adminleftbaritem"><i class="fa fa-sign-out" style="width: 30px;"></i> <?php echo uilang("Logout") ?></div></a>
+								<a href="<?php echo $baseurl ?>admin.php"><div class="adminleftbaritem"><i class="fa fa-home" style="width: 30px;"></i> <?php echo uilang("Home") ?></div></a>
+								<a href="<?php echo $baseurl ?>admin.php?newpost"><div class="adminleftbaritem"><i class="fa fa-plus" style="width: 30px;"></i> <?php echo uilang("New Post") ?></div></a>
+								<a href="<?php echo $baseurl ?>admin.php?categories"><div class="adminleftbaritem"><i class="fa fa-tag" style="width: 30px;"></i> <?php echo uilang("Categories") ?></div></a>
+								<a href="<?php echo $baseurl ?>admin.php?settings"><div class="adminleftbaritem"><i class="fa fa-cogs" style="width: 30px;"></i> <?php echo uilang("Settings") ?></div></a>
+								<a href="<?php echo $baseurl ?>admin.php?logout"><div class="adminleftbaritem"><i class="fa fa-sign-out" style="width: 30px;"></i> <?php echo uilang("Logout") ?></div></a>
 								
 								<div style="text-align: center; padding: 30px; font-size: 10px;">CMS <?php echo uilang("Developed by") ?> <a target="_blank" class="textlink" href="https://webappdev.my.id/">https://webappdev.my.id/</a></div>
 							</div>
@@ -186,7 +186,7 @@ include("uilang.php");
 								//update category
 								if(isset($_GET["updatecategory"])){
 									?>
-									<h3><a href="?categories"><i class="fa fa-arrow-left"></i> <?php echo uilang("Back") ?></a></h3>
+									<h3><a href="<?php echo $baseurl ?>admin.php?categories"><i class="fa fa-arrow-left"></i> <?php echo uilang("Back") ?></a></h3>
 									<?php
 									$id = mysqli_real_escape_string($connection, $_GET["updatecategory"]);
 									
@@ -213,7 +213,7 @@ include("uilang.php");
 									if(mysqli_num_rows($result) > 0){
 										while($row = mysqli_fetch_assoc($result)){
 											?>
-											<div class="categoryblock"><i class="fa fa-tag"></i> <?php echo $row["category"] ?> <span style="margin-left: 20px; font-size: 12px; color: #535353;"><a href="?categories&updatecategory=<?php echo $row["id"] ?>"><i class="fa fa-edit"></i> <?php echo uilang("Edit") ?></a> | <a href="?categories&deletecategory=<?php echo $row["id"] ?>"><i class="fa fa-trash"></i> <?php echo uilang("Delete") ?></a></span></div>
+											<div class="categoryblock"><i class="fa fa-tag"></i> <?php echo $row["category"] ?> <span style="margin-left: 20px; font-size: 12px; color: #535353;"><a href="<?php echo $baseurl ?>admin.php?categories&updatecategory=<?php echo $row["id"] ?>"><i class="fa fa-edit"></i> <?php echo uilang("Edit") ?></a> | <a href="<?php echo $baseurl ?>admin.php?categories&deletecategory=<?php echo $row["id"] ?>"><i class="fa fa-trash"></i> <?php echo uilang("Delete") ?></a></span></div>
 											<?php
 										}
 									}else{
@@ -379,7 +379,7 @@ include("uilang.php");
 												?>
 												<div style="display: inline-block; text-align: center; vertical-align: middle;">
 													<img src="pictures/<?php echo $row["value"] ?>" width="64"><br>
-													<a href="?settings&removelogo" class="textlink"><i class="fa fa-trash"></i> Remove</a>
+													<a href="<?php echo $baseurl ?>admin.php?settings&removelogo" class="textlink"><i class="fa fa-trash"></i> Remove</a>
 												</div>
 												<?php
 											}
@@ -545,10 +545,10 @@ include("uilang.php");
 												?>
 												<tr>
 													<td><?php echo $postdate ?></td>
-													<td><i class="fa fa-link"></i> <a href="index.php?post=<?php echo $row["postid"] ?>" target="_blank"><?php echo $row["title"] ?></a></td>
+													<td><i class="fa fa-link"></i> <a href="<?php echo $baseurl ?>index.php?post=<?php echo $row["postid"] ?>" target="_blank"><?php echo $row["title"] ?></a></td>
 													<td><?php echo showCatName($row["catid"]) ?></td>
-													<td><a href="?editpost=<?php echo $row["id"] ?>"><i class="fa fa-edit"></i> <?php echo uilang("Edit") ?></a></td>
-													<td><a href="?deletepost=<?php echo $row["id"] ?>&title=<?php echo $row["title"] ?>"><i class="fa fa-trash"></i> <?php echo uilang("Delete") ?></a></td>
+													<td><a href="<?php echo $baseurl ?>?editpost=<?php echo $row["id"] ?>"><i class="fa fa-edit"></i> <?php echo uilang("Edit") ?></a></td>
+													<td><a href="<?php echo $baseurl ?>?deletepost=<?php echo $row["id"] ?>&title=<?php echo $row["title"] ?>"><i class="fa fa-trash"></i> <?php echo uilang("Delete") ?></a></td>
 												</tr>
 												<?php
 											}
@@ -584,7 +584,7 @@ include("uilang.php");
 					$_SESSION["adminusername"] = $_POST["username"];
 					$_SESSION["adminpassword"] = $_POST["password"];
 					echo "<div class='alert'>" .uilang("Login success!"). "</div>";
-					echo "<script>location.href='admin.php'</script>";
+					echo "<script>location.href='" .$baseurl. "admin.php'</script>";
 				}else{
 					echo "<div class='alert'>Login error!</div>";
 				}
@@ -619,7 +619,7 @@ include("uilang.php");
 		if(isset($_GET["logout"])){
 			session_destroy();
 			echo "Bye!";
-			echo "<script>location.href='admin.php'</script>";
+			echo "<script>location.href='" .$baseurl. "admin.php'</script>";
 		}
 		?>
 		
