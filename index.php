@@ -271,12 +271,15 @@ include("uilang.php");
 								<script>
 									var moptions = JSON.parse($("#productoptions").html())
 									var productoptions = "<label>" + moptions[0].title + "</label>" 
-									productoptions += "<select>"
+									productoptions += "<select id='productoptionsselect' onchange='overrideprice()'>"
 									for(var i = 0; i < moptions[0].options.length; i++){
-										productoptions += "<option>" + moptions[0].options[i].title + "</option>"
+										productoptions += "<option value=" +moptions[0].options[i].price+ ">" + moptions[0].options[i].title + "</option>"
 									}
 									productoptions += "</select>"
 									$("#productoptions").html(productoptions).show()
+									setTimeout(function(){
+										overrideprice()
+									}, 1000)
 								</script>
 								<?php
 							}
@@ -294,9 +297,17 @@ include("uilang.php");
 									price : currentprice,
 									title : "<?php echo $row["title"] ?>",
 									quantity : 0,
+									options : "",
 									subtotal : 0,
 									notes : "",
 								}
+								
+								function overrideprice(){
+									currentprice = $("#productoptionsselect").val()
+									currentitem.options = $("#productoptionsselect option:selected").text()
+									updateCurrentTotal()
+								}
+								
 								function updateCurrentTotal(){
 									var currentQ = $("#currentQ").val()
 									if(currentQ > 0){
@@ -656,9 +667,13 @@ include("uilang.php");
 					var ordermessage = ""
 					var grandtotal = 0
 					for(var i = 0; i < appdata.orderitems.length; i++){
-						ordermessage += "<div class='ordereditem'><div><i class='fa fa-check-circle'></i> " + appdata.orderitems[i].title + " * " + appdata.orderitems[i].quantity + " = <?php echo $currencysymbol ?>" + tSep(appdata.orderitems[i].subtotal.toFixed(2)) + "<div onclick='deleteorderitem(" +i+ ")' style='display: inline-block; color: red; background-color: white; padding: 2px; border-radius: 6px; margin: 5px; cursor: pointer;'><i class='fa fa-trash'></i></div></div>"
+						ordermessage += "<div class='ordereditem'><div>" + appdata.orderitems[i].title + " * " + appdata.orderitems[i].quantity + " = <?php echo $currencysymbol ?>" + tSep(appdata.orderitems[i].subtotal.toFixed(2)) + "<div onclick='deleteorderitem(" +i+ ")' style='display: inline-block; margin-left: 10px; cursor: pointer;'>[<i class='fa fa-trash'></i> <?php echo uilang("Delete") ?>]</div></div>"
+						
+						if(appdata.orderitems[i].options != "")
+							ordermessage += "<div style='margin-top: 5px; font-size: 10px;'><i class='fa fa-check-square-o' style='width: 10px;'></i> " + appdata.orderitems[i].options + "</div>"
 						if(appdata.orderitems[i].notes != "")
-							ordermessage += "<div style='margin-top: 5px; font-size: 10px;'><i class='fa fa-file-text' style='width: 10px;'></i> " + appdata.orderitems[i].notes + "</div>"
+							ordermessage += "<div style='margin-top: 5px; font-size: 10px;'><i class='fa fa-file-text-o' style='width: 10px;'></i> " + appdata.orderitems[i].notes + "</div>"
+						
 						ordermessage += "</div>"
 						grandtotal += appdata.orderitems[i].subtotal
 					}
