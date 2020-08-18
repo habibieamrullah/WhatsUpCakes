@@ -7,6 +7,8 @@ if(isset($_POST["newposttitle"])){
 	$newposttitle = mysqli_real_escape_string($connection, $_POST["newposttitle"]);
 	$newpostcontent = mysqli_real_escape_string($connection, $_POST["newpostcontent"]);
 	$catid = mysqli_real_escape_string($connection, $_POST["catid"]);
+	$normalprice = mysqli_real_escape_string($connection, $_POST["normalprice"]);
+	$discountprice = mysqli_real_escape_string($connection, $_POST["discountprice"]);
 	$currenttime = round(microtime(true) * 1000);
 	if($newposttitle != "" && $newpostcontent != ""){
 		
@@ -42,7 +44,7 @@ if(isset($_POST["newposttitle"])){
 			}
 		}
 		
-		mysqli_query($connection, "INSERT INTO $tableposts (postid, catid, title, content, picture, time) VALUES ('$postid', $catid, '$newposttitle', '$newpostcontent', '$newpicture', '$currenttime')");
+		mysqli_query($connection, "INSERT INTO $tableposts (postid, catid, title, content, picture, time, normalprice, discountprice) VALUES ('$postid', $catid, '$newposttitle', '$newpostcontent', '$newpicture', '$currenttime', '$normalprice', '$discountprice')");
 		
 		?>
 		<h3><?php echo uilang("Congratulation!") ?></h3>

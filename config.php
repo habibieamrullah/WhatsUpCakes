@@ -33,8 +33,11 @@ mysqli_query($connection, "CREATE TABLE IF NOT EXISTS $tableposts (
 id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 postid VARCHAR(70) NOT NULL,
 catid INT(6) NOT NULL,
+normalprice INT(6) NOT NULL,
+discountprice INT(6) NOT NULL,
 title VARCHAR(300) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
 time VARCHAR(150) NOT NULL,
+options VARCHAR(200) NOT NULL,
 picture VARCHAR(150) NOT NULL,
 content VARCHAR(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
 )");
@@ -53,6 +56,7 @@ $about = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmo
 $baseurl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 $language = "en";
 $logo = "";
+$currencysymbol = "$";
 $baseurl = str_replace("index.php", "", $baseurl);
 
 //Generating default website config
@@ -68,6 +72,7 @@ if(mysqli_num_rows($result) == 0){
 	$sql .= "INSERT INTO $tableconfig (config, value) VALUES ('about', '$about');";
 	$sql .= "INSERT INTO $tableconfig (config, value) VALUES ('language', '$language');";
 	$sql .= "INSERT INTO $tableconfig (config, value) VALUES ('logo', '$logo');";
+	$sql .= "INSERT INTO $tableconfig (config, value) VALUES ('currencysymbol', '$currencysymbol');";
 	$sql .= "INSERT INTO $tableconfig (config, value) VALUES ('baseurl', '$baseurl');";
 	
 	mysqli_multi_query($connection, $sql);
@@ -95,6 +100,9 @@ if(mysqli_num_rows($result) == 0){
 				break;
 			case "logo" :
 				$logo = $row["value"];
+				break;
+			case "currencysymbol" :
+				$currencysymbol = $row["value"];
 				break;
 		}
 	}

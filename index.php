@@ -304,7 +304,13 @@ include("uilang.php");
 									<a href="<?php echo $baseurl ?>?post=<?php echo $row["postid"] ?>">
 										<div style="display: table; width: 100%; height: 100%; background-color: rgba(0,0,0,.25); padding: 40px; box-sizing: border-box; border-radius: 20px;">
 											<div class="smallinmobile w75">
-												<h2><?php echo shorten_text($row["title"], 21, ' ...', true) ?></h2>
+												<?php
+												$saleprice = $row["normalprice"];
+												if($row["discountprice"] != ""){
+													$saleprice = $row["discountprice"];
+												}
+												?>
+												<h2><?php echo shorten_text($row["title"], 21, ' ...', true) . " <i class='fa fa-angle-right'></i> " . $currencysymbol . $saleprice ?></h2>
 												<p><?php echo shorten_text(strip_tags($row["content"]), 75, ' ...', false) ?></p>
 											</div>
 											<div class="smallinmobile w25" style="vertical-align: middle; text-align: center;">
@@ -353,8 +359,14 @@ include("uilang.php");
 									?>
 									<a href="<?php echo $baseurl ?>?post=<?php echo $vidrow["postid"] ?>">
 										<div class="filmblock" style="background: url(<?php echo $baseurl . $imagefile ?>) no-repeat center center; background-size: cover; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover;">
-											<div style="position: absolute; bottom: 0; left: 0; right: 0; text-align: center; background-color: rgba(0,0,0,.5); padding: 10px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; color: white;">
-												<h2 style="font-size: 14px;"><?php echo shorten_text($vidrow["title"], 18, ' ...', false) ?></h2>
+											<div style="position: absolute; bottom: 0; left: 0; right: 0; text-align: center; background-color: rgba(255,255,255,.75); padding: 10px; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; color: black;">
+												<?php
+												$saleprice = $vidrow["normalprice"];
+												if($vidrow["discountprice"] != ""){
+													$saleprice = $vidrow["discountprice"];
+												}
+												?>
+												<h2 style="font-size: 14px;"><?php echo shorten_text($vidrow["title"], 18, ' ...', false) ?></h2><h3 style="font-size: 20px; color: <?php echo $maincolor ?>"><?php echo $currencysymbol . $saleprice ?></h3>
 											</div>
 										</div>
 									</a>

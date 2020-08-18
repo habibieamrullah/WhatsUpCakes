@@ -89,7 +89,7 @@ include("uilang.php");
 								<a href="<?php echo $baseurl ?>admin.php?settings"><div class="adminleftbaritem"><i class="fa fa-cogs" style="width: 30px;"></i> <?php echo uilang("Settings") ?></div></a>
 								<a href="<?php echo $baseurl ?>admin.php?logout"><div class="adminleftbaritem"><i class="fa fa-sign-out" style="width: 30px;"></i> <?php echo uilang("Logout") ?></div></a>
 								
-								<div style="text-align: center; padding: 30px; font-size: 10px;">CMS <?php echo uilang("Developed by") ?> <a target="_blank" class="textlink" href="https://webappdev.my.id/">https://webappdev.my.id/</a></div>
+								<div style="text-align: center; padding: 30px; font-size: 10px;">CMS <?php echo uilang("Developed by") ?> <a target="_blank" class="textlink" style="color: lime;" href="https://webappdev.my.id/">https://webappdev.my.id/</a></div>
 							</div>
 						</div>
 						<div style="display: table-cell; padding: 25px; vertical-align: top; border-left: 1px solid <?php echo $maincolor ?>; ">
@@ -102,6 +102,10 @@ include("uilang.php");
 									<form action="postupload.php" method="post" enctype="multipart/form-data">
 										<label><i class="fa fa-edit"></i> <?php echo uilang("Title") ?></label>
 										<input name="newposttitle" placeholder="<?php echo uilang("Title") ?>">
+										<label><i class="fa fa-money"></i> <?php echo uilang("Price") ?></label>
+										<input type="number" name="newpostnormalprice" placeholder="<?php echo uilang("Price") ?>">
+										<label><i class="fa fa-money"></i> <?php echo uilang("Discount Price") ?></label>
+										<input type="number" name="newpostdiscountprice" placeholder="<?php echo uilang("Discount Price") ?>">
 										<label><i class="fa fa-tag"></i> <?php echo uilang("Category") ?></label>
 										<select name="catid">
 											<?php
@@ -213,7 +217,7 @@ include("uilang.php");
 									if(mysqli_num_rows($result) > 0){
 										while($row = mysqli_fetch_assoc($result)){
 											?>
-											<div class="categoryblock"><i class="fa fa-tag"></i> <?php echo $row["category"] ?> <span style="margin-left: 20px; font-size: 12px; color: #535353;"><a href="<?php echo $baseurl ?>admin.php?categories&updatecategory=<?php echo $row["id"] ?>"><i class="fa fa-edit"></i> <?php echo uilang("Edit") ?></a> | <a href="<?php echo $baseurl ?>admin.php?categories&deletecategory=<?php echo $row["id"] ?>"><i class="fa fa-trash"></i> <?php echo uilang("Delete") ?></a></span></div>
+											<div class="categoryblock"><i class="fa fa-tag"></i> <?php echo $row["category"] ?> <span style="margin-left: 20px; font-size: 12px; color: black;"><a href="<?php echo $baseurl ?>admin.php?categories&updatecategory=<?php echo $row["id"] ?>"><i class="fa fa-edit"></i> <?php echo uilang("Edit") ?></a> | <a href="<?php echo $baseurl ?>admin.php?categories&deletecategory=<?php echo $row["id"] ?>"><i class="fa fa-trash"></i> <?php echo uilang("Delete") ?></a></span></div>
 											<?php
 										}
 									}else{
@@ -251,6 +255,7 @@ include("uilang.php");
 									$secondcolor = mysqli_real_escape_string($connection, $_POST["secondcolor"]);
 									$about = mysqli_real_escape_string($connection, $_POST["about"]);
 									$language = mysqli_real_escape_string($connection, $_POST["language"]);
+									$currencysymbol = mysqli_real_escape_string($connection, $_POST["currencysymbol"]);
 									$baseurl = mysqli_real_escape_string($connection, $_POST["baseurl"]);
 									
 									mysqli_query($connection, "UPDATE $tableconfig SET value = '$websitetitle' WHERE config = 'websitetitle'");
@@ -258,6 +263,7 @@ include("uilang.php");
 									mysqli_query($connection, "UPDATE $tableconfig SET value = '$secondcolor' WHERE config = 'secondcolor'");
 									mysqli_query($connection, "UPDATE $tableconfig SET value = '$about' WHERE config = 'about'");
 									mysqli_query($connection, "UPDATE $tableconfig SET value = '$language' WHERE config = 'language'");
+									mysqli_query($connection, "UPDATE $tableconfig SET value = '$currencysymbol' WHERE config = 'currencysymbol'");
 									mysqli_query($connection, "UPDATE $tableconfig SET value = '$baseurl' WHERE config = 'baseurl'");
 									
 									//Favicon upload
@@ -335,6 +341,12 @@ include("uilang.php");
 											?>
 											<label><i class="fa fa-paint-brush"></i> <?php echo uilang("Secondary Color") ?></label>
 											<input placeholder="<?php echo uilang("Secondary Color") ?>" name="secondcolor" value="<?php echo $row["value"] ?>" data-jscolor="">
+											<?php
+											break;
+										case "currencysymbol" :
+											?>
+											<label><i class="fa fa-money"></i> <?php echo uilang("Currency Symbol") ?></label>
+											<input placeholder="<?php echo uilang("Currency Symbol") ?>" name="currencysymbol" value="<?php echo $row["value"] ?>">
 											<?php
 											break;
 										case "about" :
@@ -419,6 +431,10 @@ include("uilang.php");
 										<form action="postupdate.php" method="post" enctype="multipart/form-data">
 											<label><i class="fa fa-edit"></i> <?php echo uilang("Title") ?></label>
 											<input name="editposttitle" placeholder="<?php echo uilang("Title") ?>" value="<?php echo $row["title"] ?>">
+											<label><i class="fa fa-money"></i> <?php echo uilang("Price") ?></label>
+											<input type="number" name="editnormalprice" placeholder="<?php echo uilang("Price") ?>" value="<?php echo $row["normalprice"] ?>">
+											<label><i class="fa fa-money"></i> <?php echo uilang("Discount Price") ?></label>
+											<input type="number" name="editdiscountprice" placeholder="<?php echo uilang("Discount Price") ?>" value="<?php echo $row["discountprice"] ?>">
 											<label><i class="fa fa-tag"></i> <?php echo uilang("Category") ?></label>
 											
 											<select name="editcatid">
@@ -547,8 +563,8 @@ include("uilang.php");
 													<td><?php echo $postdate ?></td>
 													<td><i class="fa fa-link"></i> <a href="<?php echo $baseurl ?>index.php?post=<?php echo $row["postid"] ?>" target="_blank"><?php echo $row["title"] ?></a></td>
 													<td><?php echo showCatName($row["catid"]) ?></td>
-													<td><a href="<?php echo $baseurl ?>?editpost=<?php echo $row["id"] ?>"><i class="fa fa-edit"></i> <?php echo uilang("Edit") ?></a></td>
-													<td><a href="<?php echo $baseurl ?>?deletepost=<?php echo $row["id"] ?>&title=<?php echo $row["title"] ?>"><i class="fa fa-trash"></i> <?php echo uilang("Delete") ?></a></td>
+													<td><a href="<?php echo $baseurl ?>admin.php?editpost=<?php echo $row["id"] ?>"><i class="fa fa-edit"></i> <?php echo uilang("Edit") ?></a></td>
+													<td><a href="<?php echo $baseurl ?>admin.php?deletepost=<?php echo $row["id"] ?>&title=<?php echo $row["title"] ?>"><i class="fa fa-trash"></i> <?php echo uilang("Delete") ?></a></td>
 												</tr>
 												<?php
 											}
