@@ -60,7 +60,7 @@ if(isset($_POST["editposttitle"]) && isset($_POST["id"])){
 			}
 			
 			mysqli_query($connection, "UPDATE $tableposts SET title = '$posttitle', catid = $catid, content = '$content', picture = '$newpicture', normalprice='$normalprice', discountprice='$discountprice' WHERE id = $id");
-			echo "<div class='alert'>Post successfully updated.</div>";
+			echo "<div class='alert'>" .uilang("Post successfully updated."). "</div>";
 		
 		}
 	}	

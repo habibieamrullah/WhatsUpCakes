@@ -54,11 +54,7 @@ include("uilang.php");
         <script type="text/javascript" src="<?php echo $baseurl ?>slick/slick.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="<?php echo $baseurl ?>sharingbuttons.css"/>
 		<?php include("style.php"); ?>
-		<script>
-			function tSep(x){
-				return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-			}
-		</script>
+		<script src="<?php echo $baseurl ?>somefunctions.js"></script>
 	</head>
 	<body>
 		<div id="header">
@@ -422,7 +418,7 @@ include("uilang.php");
 							?>
 							<div class="section">
 								<div class="catseparator">
-									<div style="display: inline-block;"><h1 style="font-size: 21px;"><i class="fa fa-tag" style="color: <?php echo $maincolor ?>;"></i> <?php echo $category ?></h1></div>
+									<div style="display: inline-block;"><h1 style="font-size: 25px;"><i class="fa fa-tag" style="color: <?php echo $maincolor ?>;"></i> <?php echo $category ?></h1></div>
 									<div style="display: inline-block; float: right; margin-top: 8px; color: <?php echo $maincolor ?>;"><a class="moreoncat" href="<?php echo $baseurl ?>?category=<?php echo urlencode($category) ?>"><?php echo uilang("More in") . " " . $category ?> <i class="fa fa-plus-circle"></i></a></div>
 								</div>
 							</div>
@@ -543,6 +539,9 @@ include("uilang.php");
 				$result = mysqli_query($connection, $sql);
 				if($result){
 					if(mysqli_num_rows($result) > 0){
+						?>
+						<div class="categoryblock"><a href="<?php echo $baseurl ?>?all"><i class="fa fa-tag" style="width: 10px;"></i> <?php echo uilang("All") ?></a></div>
+						<?php
 						while($row = mysqli_fetch_assoc($result)){
 							?>
 							<div class="categoryblock"><a href="<?php echo $baseurl ?>?category=<?php echo urlencode($row["category"]) ?>"><i class="fa fa-tag" style="width: 10px;"></i> <?php echo $row["category"] ?></a></div>
@@ -638,9 +637,10 @@ include("uilang.php");
 					var ordermessage = ""
 					var grandtotal = 0
 					for(var i = 0; i < appdata.orderitems.length; i++){
-						ordermessage += "<div class='ordereditem'><div><i class='fa fa-check-circle'></i> " + appdata.orderitems[i].title + " * " + appdata.orderitems[i].quantity + " = <?php echo $currencysymbol ?>" + tSep(appdata.orderitems[i].subtotal.toFixed(2)) + "<span onclick='deleteorderitem(" +i+ ")' style='color: red; background-color: white; padding: 2px; border-radius: 6px; margin-left: 14px; cursor: pointer;'><i class='fa fa-trash'></i> <?php echo uilang("Delete") ?></span></div>"
+						ordermessage += "<div class='ordereditem'><div><i class='fa fa-check-circle'></i> " + appdata.orderitems[i].title + " * " + appdata.orderitems[i].quantity + " = <?php echo $currencysymbol ?>" + tSep(appdata.orderitems[i].subtotal.toFixed(2)) + "<div onclick='deleteorderitem(" +i+ ")' style='display: inline-block; color: red; background-color: white; padding: 2px; border-radius: 6px; margin: 5px; cursor: pointer;'><i class='fa fa-trash'></i></div></div>"
 						if(appdata.orderitems[i].notes != "")
-							ordermessage += "<div style='margin-top: 5px; font-size: 10px;'><i class='fa fa-file-text' style='width: 10px;'></i> " + appdata.orderitems[i].notes + "</div></div>"
+							ordermessage += "<div style='margin-top: 5px; font-size: 10px;'><i class='fa fa-file-text' style='width: 10px;'></i> " + appdata.orderitems[i].notes + "</div>"
+						ordermessage += "</div>"
 						grandtotal += appdata.orderitems[i].subtotal
 					}
 					$("#grandtotal").html("<?php echo $currencysymbol ?>" + tSep(grandtotal.toFixed(2)))

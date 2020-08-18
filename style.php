@@ -493,6 +493,7 @@
 		color: white;
 		background-color: <?php echo $maincolor ?>;
 		padding-bottom: 50px;
+		margin-top: 20px;
 	}
 	
 	.smallerinput input, label{
@@ -530,9 +531,9 @@
 		.morebutton{
 			width: 100px;
 			padding: 10px;
-			background-color: <?php echo $maincolor ?>;
-			border: 1px solid black;
-			color: black;
+			background-color: white;
+			border: 1px solid white;
+			color: <?php echo $maincolor ?>;
 			margin: 0 auto;
 		}
 		
