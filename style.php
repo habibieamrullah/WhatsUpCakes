@@ -256,15 +256,11 @@
 		margin: 30px;
 		background-color: white;
 		border-radius: 6px;
-		border: 1px solid black;
-		transition: border .5s;
+		border: 1px solid white;
 		color: white;
+		outline: none;
 	}
 	
-	.firstthreeblock:hover{
-		border: 1px solid <?php echo $maincolor ?>;
-		transition: border .5s;
-	}
 	
 	.morebutton{
 		padding: 20px;
@@ -378,9 +374,9 @@
 		display: table;
 		width: 350px;
 		padding: 14px;
+		box-sizing: border-box;
 		transition: background-color .5s;
-		border-bottom-left-radius: 20px;
-		border-top-left-radius: 20px;
+		border-radius: 5px;
 		
 	}
 	
@@ -458,8 +454,8 @@
 	
 	.brightonhover:hover{
 		background-color: rgba(0,0,0,.5);
-		backdrop-filter: blur(15px);
-		-webkit-backdrop-filter: blur(15px);
+		backdrop-filter: blur(5px);
+		-webkit-backdrop-filter: blur(5px);
 		transition: background-color .5s;
 	}
 	
@@ -468,6 +464,52 @@
 	}
 	.slick-next:before {
 		color: <?php echo $maincolor ?>;
+	}
+	
+	.orderblock{
+		background-color: white;
+		border-radius: 6px;
+		border: 2px solid <?php echo $maincolor ?>;
+	}
+	
+	.buybutton{
+		background-color: <?php echo $maincolor ?>;
+		transition: background-color .5s;
+		cursor: pointer;
+		font-weight: bold;
+		padding: 10px;
+		display: inline-block;
+		border-radius: 6px;
+		color: white;
+		margin-right: 10px;
+	}
+	
+	.buybutton:hover{
+		background-color: <?php echo $secondcolor ?>;
+		transition: background-color .5s;
+	}
+	
+	.shoppingcart{
+		color: white;
+		background-color: <?php echo $maincolor ?>;
+		padding-bottom: 50px;
+	}
+	
+	.smallerinput input, label{
+		margin-bottom: 2px;
+		margin-top: 2px;
+		padding: 5px;
+		font-size: 14px;
+	}
+	
+	.ordereditem{
+		padding: 5px;
+		margin-bottom: 2px;
+		border-radius: 6px;
+	}
+	
+	.ordereditem:hover{
+		background-color: <?php echo $secondcolor ?>;
 	}
 	
 	/* mobile view */

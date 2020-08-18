@@ -54,9 +54,11 @@ include("uilang.php");
         <script type="text/javascript" src="<?php echo $baseurl ?>slick/slick.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="<?php echo $baseurl ?>sharingbuttons.css"/>
 		<?php include("style.php"); ?>
-		<style>
-			
-		</style>
+		<script>
+			function tSep(x){
+				return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			}
+		</script>
 	</head>
 	<body>
 		<div id="header">
@@ -104,13 +106,19 @@ include("uilang.php");
 							}
 
 							?>
-							<a href="<?php echo $baseurl ?>?post=<?php echo $vidrow["postid"] ?>">
-								<div class="filmblock" style="background: url(<?php echo $baseurl . $imagefile ?>) no-repeat center center; background-size: cover; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover;">
-									<div style="position: absolute; bottom: 0; left: 0; right: 0; text-align: center; background-color: rgba(0,0,0,.5); padding: 10px; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);">
-										<h2 style="font-size: 14px;"><?php echo shorten_text($vidrow["title"], 18, ' ...', false) ?></h2>
-									</div>
+							<!-- Thumbnail -->
+							<div class="filmblock" style="background: url(<?php echo $baseurl . $imagefile ?>) no-repeat center center; background-size: cover; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover;">
+								<div class="filmblocktitleholder">
+									<?php
+									$saleprice = $vidrow["normalprice"];
+									if($vidrow["discountprice"] != ""){
+										$saleprice = $vidrow["discountprice"];
+									}
+									?>
+									<h2 style="font-size: 14px;"><?php echo shorten_text($vidrow["title"], 25, ' ...', false) ?></h2><h3 style="font-size: 20px; font-weight: bold; color: <?php echo $maincolor ?>"><?php echo $currencysymbol . $saleprice ?></h3>
+									<a href="<?php echo $baseurl ?>?post=<?php echo $vidrow["postid"] ?>"><div class="morebutton"><?php echo uilang("MORE") ?> <i class="fa fa-arrow-right"></i></div></a>
 								</div>
-							</a>
+							</div>
 							<?php
 
 						}
@@ -156,13 +164,19 @@ include("uilang.php");
 								}
 
 								?>
-								<a href="<?php echo $baseurl ?>?post=<?php echo $vidrow["postid"] ?>">
-									<div class="filmblock" style="background: url(<?php echo $baseurl . $imagefile ?>) no-repeat center center; background-size: cover; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover;">
-										<div style="position: absolute; bottom: 0; left: 0; right: 0; text-align: center; background-color: rgba(0,0,0,.5); padding: 10px; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px;">
-											<h2 style="font-size: 14px;"><?php echo shorten_text($vidrow["title"], 18, ' ...', false) ?></h2>
-										</div>
+								<!-- Thumbnail -->
+								<div class="filmblock" style="background: url(<?php echo $baseurl . $imagefile ?>) no-repeat center center; background-size: cover; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover;">
+									<div class="filmblocktitleholder">
+										<?php
+										$saleprice = $vidrow["normalprice"];
+										if($vidrow["discountprice"] != ""){
+											$saleprice = $vidrow["discountprice"];
+										}
+										?>
+										<h2 style="font-size: 14px;"><?php echo shorten_text($vidrow["title"], 25, ' ...', false) ?></h2><h3 style="font-size: 20px; font-weight: bold; color: <?php echo $maincolor ?>"><?php echo $currencysymbol . $saleprice ?></h3>
+										<a href="<?php echo $baseurl ?>?post=<?php echo $vidrow["postid"] ?>"><div class="morebutton"><?php echo uilang("MORE") ?> <i class="fa fa-arrow-right"></i></div></a>
 									</div>
-								</a>
+								</div>
 								<?php
 
 							}
@@ -229,6 +243,7 @@ include("uilang.php");
 									<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&amp;version=v5.0&amp;appId=569420283509636&amp;autoLogAppEvents=1"></script>
 									 
 									<div class="fb-comments" data-href="<?php echo $baseurl ?>?post/<?php echo $row["postid"] ?>" data-width="100%"  data-numposts="14"></div>
+									
 								</div>
 								
 								
@@ -240,7 +255,7 @@ include("uilang.php");
 											console.log(data)
 										})
 									}
-									viewedThis("<?php echo $postid ?>")
+									//viewedThis("<?php echo $postid ?>")
 								</script>
 								<?php
 							}
@@ -248,6 +263,54 @@ include("uilang.php");
 						?>
 					</div>
 					<div class="randomvids">
+						<div class="randomvidblock orderblock">
+							<h2><?php echo uilang("Order") ?></h2>
+							<label><i class="fa fa-plus"></i> <?php echo uilang("Quantity") ?></label>
+							<input id="currentQ" type="number" value=1 onkeyup="updateCurrentTotal()">
+							<label><i class="fa fa-file-text-o"></i> <?php echo uilang("Notes") ?></label>
+							<textarea id="ordernotes" placeholder="<?php echo uilang("Write some notes...") ?>"></textarea>
+							<p id="currenttotal" style="font-size: 30px;">Rp. 12345</p>
+							<div class="buybutton" onclick="addtocart()"><i class="fa fa-shopping-cart"></i> <?php echo uilang("Add to Cart") ?></div>
+							
+							<script>
+								var currentprice = <?php echo $saleprice ?>;
+								var currentTotal = 0
+								var currentitem = {
+									price : currentprice,
+									title : "<?php echo $row["title"] ?>",
+									quantity : 0,
+									subtotal : 0,
+									notes : "",
+								}
+								function updateCurrentTotal(){
+									var currentQ = $("#currentQ").val()
+									if(currentQ > 0){
+										currentTotal = currentQ * currentprice
+									}else{
+										$("#currentQ").val("1")
+										currentQ = 1
+										currentTotal = currentQ * currentprice
+									}
+									currentitem.quantity = currentQ
+									$("#currenttotal").html("<?php echo $currencysymbol ?> " + tSep(currentTotal.toFixed(2)))
+								}
+								updateCurrentTotal()
+								
+								function addtocart(){
+									//currentitem.notes = addslashes($("#ordernotes").val())
+									currentitem.notes = $("#ordernotes").val()
+									currentitem.subtotal = currentTotal
+									appdata.orderitems.push(currentitem)
+									savedata()
+									reloadcartdata()
+									$([document.documentElement, document.body]).animate({
+										scrollTop: $(".shoppingcart").offset().top
+									}, 1000);
+								}
+							</script>
+							
+						</div>
+						
 						<div class="randomvidblock"><?php echo uilang("You may like:") ?></div>
 						<?php
 						$sql = "SELECT * FROM $tableposts ORDER BY RAND() LIMIT 5";
@@ -280,7 +343,7 @@ include("uilang.php");
 												<p><?php echo shorten_text(strip_tags($row["content"]), 75, ' ...', false) ?></p>
 											</div>
 											<div style="padding-left: 14px;">
-												<p style="color: <?php echo $maincolor ?>; font-size: 10px;"><i class="fa fa-calendar" style="width: 10px;"></i> <?php echo $postdate ?> <i class="fa fa-tag" style="margin-left: 5px; width: 10px;"></i> <?php echo showCatName($row["catid"]) ?></p>
+												<p style="color: <?php echo $maincolor ?>; font-weight: bold; font-size: 12px;"><i class="fa fa-calendar" style="width: 10px;"></i> <?php echo $postdate ?> <i class="fa fa-tag" style="margin-left: 5px; width: 10px;"></i> <?php echo showCatName($row["catid"]) ?></p>
 											</div>
 											
 										</div>
@@ -374,6 +437,8 @@ include("uilang.php");
 									}
 
 									?>
+									
+									<!-- Thumbnail -->
 									<div class="filmblock" style="background: url(<?php echo $baseurl . $imagefile ?>) no-repeat center center; background-size: cover; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover;">
 										<div class="filmblocktitleholder">
 											<?php
@@ -382,7 +447,7 @@ include("uilang.php");
 												$saleprice = $vidrow["discountprice"];
 											}
 											?>
-											<h2 style="font-size: 14px;"><?php echo shorten_text($vidrow["title"], 18, ' ...', false) ?></h2><h3 style="font-size: 20px; font-weight: bold; color: <?php echo $maincolor ?>"><?php echo $currencysymbol . $saleprice ?></h3>
+											<h2 style="font-size: 14px;"><?php echo shorten_text($vidrow["title"], 25, ' ...', false) ?></h2><h3 style="font-size: 20px; font-weight: bold; color: <?php echo $maincolor ?>"><?php echo $currencysymbol . $saleprice ?></h3>
 											<a href="<?php echo $baseurl ?>?post=<?php echo $vidrow["postid"] ?>"><div class="morebutton"><?php echo uilang("MORE") ?> <i class="fa fa-arrow-right"></i></div></a>
 										</div>
 									</div>
@@ -408,6 +473,38 @@ include("uilang.php");
 		}
 		
 		?>
+		
+		<!-- Shopping Cart -->
+		<div class="section shoppingcart">
+			<div>
+				<h1 align="center" style="margin: 50px;"><i class="fa fa-shopping-cart"></i> <?php echo uilang("Shopping Cart") ?></h1>
+			</div>
+			<div class="footerlink" style="background-color: inherit;">
+				<div class="flblock smallerinput">
+					<h2><i class="fa fa-user"></i> <?php echo uilang("Contact Information") ?></h2>
+					<label><?php echo uilang("Name") ?></label>
+					<input id="biname" onkeyup="savebuyerinfo()" placeholder="<?php echo uilang("Name") ?>" type="text">
+					<label><?php echo uilang("Email") ?></label>
+					<input id="biemail" onkeyup="savebuyerinfo()" placeholder="<?php echo uilang("Email") ?>" type="email">
+					<label><?php echo uilang("Mobile") ?></label>
+					<input id="bimobile" onkeyup="savebuyerinfo()" placeholder="<?php echo uilang("Mobile") ?>" type="number">
+				</div>
+				<div class="flblock">
+					<h2><i class="fa fa-list"></i> <?php echo uilang("Order Items") ?></h2>
+					<div id="orderedproducts"><p><?php echo uilang("You did not add any product.") ?></p></div>
+				</div>
+				<div class="flblock">
+					<h2><i class="fa fa-credit-card"></i> <?php echo uilang("Total") ?></h2>
+					<p id="grandtotal" style="font-size: 30px">Rp. 0</p>
+					<div class="buybutton" style="border: 1px solid white"><i class="fa fa-whatsapp"></i> <?php echo uilang("Order Now") ?></div>
+				</div>
+			</div>
+			
+			<script>
+				//Count current grand total 
+			</script>
+		</div>
+		
 		<!-- Footer -->
 		<div class="section footerlink">
 		
@@ -496,6 +593,72 @@ include("uilang.php");
 					location.href = "<?php echo $baseurl ?>?search=" + encodeURI($("#searchinput").val())
 				}, 2000)
 			}
+				
+			function addslashes(string) {
+				return string.replace(/\\/g, '\\\\').
+					replace(/\u0008/g, '\\b').
+					replace(/\t/g, '\\t').
+					replace(/\n/g, '\\n').
+					replace(/\f/g, '\\f').
+					replace(/\r/g, '\\r').
+					replace(/'/g, '\\\'').
+					replace(/"/g, '\\"');
+			}
+			
+			var appdata = {
+				buyerinfo : {
+					name : "", email : "", mobile : ""
+				}, 
+				orderitems : []
+			}
+			
+			if(localStorage.getItem("<?php echo $websitetitle ?>") === null){
+				savedata()
+			}else{
+				appdata = JSON.parse(localStorage.getItem("<?php echo $websitetitle ?>"))
+			}
+			
+			function savedata(){
+				localStorage.setItem("<?php echo $websitetitle ?>", JSON.stringify(appdata))
+			}
+			
+			function savebuyerinfo(){
+				appdata.buyerinfo.name = $("#biname").val()
+				appdata.buyerinfo.email = $("#biemail").val()
+				appdata.buyerinfo.mobile = $("#bimobile").val()
+				savedata()
+			}
+			
+			function reloadcartdata(){
+				$("#biname").val(appdata.buyerinfo.name)
+				$("#biemail").val(appdata.buyerinfo.email)
+				$("#bimobile").val(appdata.buyerinfo.mobile)
+				if(appdata.orderitems.length > 0){
+					
+					var ordermessage = ""
+					var grandtotal = 0
+					for(var i = 0; i < appdata.orderitems.length; i++){
+						ordermessage += "<div class='ordereditem'><div><i class='fa fa-check-circle'></i> " + appdata.orderitems[i].title + " * " + appdata.orderitems[i].quantity + " = <?php echo $currencysymbol ?>" + tSep(appdata.orderitems[i].subtotal.toFixed(2)) + "<span onclick='deleteorderitem(" +i+ ")' style='color: red; background-color: white; padding: 2px; border-radius: 6px; margin-left: 14px; cursor: pointer;'><i class='fa fa-trash'></i> <?php echo uilang("Delete") ?></span></div>"
+						if(appdata.orderitems[i].notes != "")
+							ordermessage += "<div style='margin-top: 5px; font-size: 10px;'><i class='fa fa-file-text' style='width: 10px;'></i> " + appdata.orderitems[i].notes + "</div></div>"
+						grandtotal += appdata.orderitems[i].subtotal
+					}
+					$("#grandtotal").html("<?php echo $currencysymbol ?>" + tSep(grandtotal.toFixed(2)))
+					$("#orderedproducts").html(ordermessage)
+				}else{
+					$("#orderedproducts").html("<p><?php echo uilang("You did not add any product.") ?></p>")
+					$("#grandtotal").html("<?php echo $currencysymbol ?>" + 0)
+				}
+			}
+			
+			function deleteorderitem(i){
+				appdata.orderitems.splice(i, 1)
+				savedata()
+				reloadcartdata()
+			}
+			
+			reloadcartdata()
+			
 		</script>
 	</body>
 </html>
