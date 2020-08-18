@@ -318,8 +318,8 @@
 	
 	.filmblock{
 		display: inline-block;
-		width: 150px;
-		height: 200px;
+		width: 200px;
+		height: 300px;
 		padding: 5px;
 		padding-top: 10px;
 		padding-bottom: 10px;
@@ -327,7 +327,6 @@
 		text-align: center;
 		position: relative; 
 		border-radius: 6px;
-		cursor: pointer;
 		border: 2px solid white;
 		transition: border .5s;
 	}
@@ -337,6 +336,9 @@
 		transition: border .5s;
 	}
 	
+	.filmblocktitleholder{
+		position: absolute; bottom: 0; left: 0; right: 0; text-align: center; background-color: rgba(255,255,255,.75); padding: 10px; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; color: black; backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+	}
 	
 	
 	.hiddeninmobile{
@@ -447,6 +449,25 @@
 	
 	.w25{
 		width: 25%;
+	}
+	
+	.brightonhover{
+		display: table; width: 100%; height: 100%; background-color: rgba(0,0,0,.25); padding: 40px; box-sizing: border-box; border-radius: 6px;
+		transition: background-color .5s;
+	}
+	
+	.brightonhover:hover{
+		background-color: rgba(0,0,0,.5);
+		backdrop-filter: blur(15px);
+		-webkit-backdrop-filter: blur(15px);
+		transition: background-color .5s;
+	}
+	
+	.slick-prev:before {
+		color: <?php echo $maincolor ?>;
+	}
+	.slick-next:before {
+		color: <?php echo $maincolor ?>;
 	}
 	
 	/* mobile view */

@@ -54,6 +54,9 @@ include("uilang.php");
         <script type="text/javascript" src="<?php echo $baseurl ?>slick/slick.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="<?php echo $baseurl ?>sharingbuttons.css"/>
 		<?php include("style.php"); ?>
+		<style>
+			
+		</style>
 	</head>
 	<body>
 		<div id="header">
@@ -103,7 +106,7 @@ include("uilang.php");
 							?>
 							<a href="<?php echo $baseurl ?>?post=<?php echo $vidrow["postid"] ?>">
 								<div class="filmblock" style="background: url(<?php echo $baseurl . $imagefile ?>) no-repeat center center; background-size: cover; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover;">
-									<div style="position: absolute; bottom: 0; left: 0; right: 0; text-align: center; background-color: rgba(0,0,0,.5); padding: 10px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;">
+									<div style="position: absolute; bottom: 0; left: 0; right: 0; text-align: center; background-color: rgba(0,0,0,.5); padding: 10px; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);">
 										<h2 style="font-size: 14px;"><?php echo shorten_text($vidrow["title"], 18, ' ...', false) ?></h2>
 									</div>
 								</div>
@@ -155,7 +158,7 @@ include("uilang.php");
 								?>
 								<a href="<?php echo $baseurl ?>?post=<?php echo $vidrow["postid"] ?>">
 									<div class="filmblock" style="background: url(<?php echo $baseurl . $imagefile ?>) no-repeat center center; background-size: cover; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover;">
-										<div style="position: absolute; bottom: 0; left: 0; right: 0; text-align: center; background-color: rgba(0,0,0,.5); padding: 10px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;">
+										<div style="position: absolute; bottom: 0; left: 0; right: 0; text-align: center; background-color: rgba(0,0,0,.5); padding: 10px; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px;">
 											<h2 style="font-size: 14px;"><?php echo shorten_text($vidrow["title"], 18, ' ...', false) ?></h2>
 										</div>
 									</div>
@@ -200,19 +203,27 @@ include("uilang.php");
 								?>
 								
 								<div id="productpic" style="background: url(<?php echo $picture ?>) no-repeat center center; background-size: cover; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover;"></div>
-								
-								<h1><?php echo $row["title"] ?></h1>
+								<?php
+								$saleprice = $row["normalprice"];
+								if($row["discountprice"] != ""){
+									$saleprice = $row["discountprice"];
+								}
+								?>
+								<h1><?php echo $row["title"] ?> <i class="fa fa-angle-double-right"></i> <?php echo $currencysymbol . $saleprice ?></h1>
 								<h5 style="color: <?php echo $maincolor ?>"><i class="fa fa-calendar" style="width: 15px;"></i> <?php echo $postdate ?> <a href="<?php echo $baseurl ?>?category=<?php echo urlencode(showcatname($row["catid"])) ?>"><i class="fa fa-tag" style="margin-left: 15px; width: 15px;"></i> <?php echo showCatName($row["catid"]) ?></a></h5>
 								<div>
 									<?php echo $row["content"] ?>
 								</div>
+								
+								<!-- Social Share Buttons-->
 								<div style="font-size: 12px;">
-								<?php
-								showSharer($baseurl . "?post/" . $row["postid"], $websitetitle);
-								?>
+									<?php
+									showSharer($baseurl . "?post/" . $row["postid"], $websitetitle);
+									?>
 								</div>
 								<br><br>
 								
+								<!-- Facebook Comments Plugin -->
 								<div style="width: 100%; box-sizing: border-box; background-color: white; border-radius: 20px; padding: 14px;">
 									<div id="fb-root"></div>
 									<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&amp;version=v5.0&amp;appId=569420283509636&amp;autoLogAppEvents=1"></script>
@@ -253,11 +264,17 @@ include("uilang.php");
 										}else{
 											$imagefile = "pictures/" . $imagefile;
 										}
+										
+										$saleprice = $row["normalprice"];
+										if($row["discountprice"] != ""){
+											$saleprice = $row["discountprice"];
+										}
+										
 										?>
 										<div class="lilimage" style="background: url(<?php echo $baseurl . $imagefile ?>) no-repeat center center; background-size: cover; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover;"></div>
 										<div class="lildescr">
 											<div class="shorttext" style="font-size: 18px; font-weight: bold;">
-												<?php echo $row["title"] ?>
+												<?php echo $row["title"] ?> <i class="fa fa-angle-double-right"></i> <?php echo $currencysymbol . $saleprice ?>
 											</div>
 											<div style="padding-left: 14px;">
 												<p><?php echo shorten_text(strip_tags($row["content"]), 75, ' ...', false) ?></p>
@@ -302,7 +319,7 @@ include("uilang.php");
 								
 								<div class="firstthreeblock" style="background: url(<?php echo $baseurl . $imagefile ?>) no-repeat center center; background-size: cover; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover;">
 									<a href="<?php echo $baseurl ?>?post=<?php echo $row["postid"] ?>">
-										<div style="display: table; width: 100%; height: 100%; background-color: rgba(0,0,0,.25); padding: 40px; box-sizing: border-box; border-radius: 20px;">
+										<div class="brightonhover">
 											<div class="smallinmobile w75">
 												<?php
 												$saleprice = $row["normalprice"];
@@ -310,7 +327,7 @@ include("uilang.php");
 													$saleprice = $row["discountprice"];
 												}
 												?>
-												<h2><?php echo shorten_text($row["title"], 21, ' ...', true) . " <i class='fa fa-angle-right'></i> " . $currencysymbol . $saleprice ?></h2>
+												<h2><?php echo shorten_text($row["title"], 21, ' ...', true) . " <i class='fa fa-angle-double-right'></i> " . $currencysymbol . $saleprice ?></h2>
 												<p><?php echo shorten_text(strip_tags($row["content"]), 75, ' ...', false) ?></p>
 											</div>
 											<div class="smallinmobile w25" style="vertical-align: middle; text-align: center;">
@@ -357,19 +374,19 @@ include("uilang.php");
 									}
 
 									?>
-									<a href="<?php echo $baseurl ?>?post=<?php echo $vidrow["postid"] ?>">
-										<div class="filmblock" style="background: url(<?php echo $baseurl . $imagefile ?>) no-repeat center center; background-size: cover; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover;">
-											<div style="position: absolute; bottom: 0; left: 0; right: 0; text-align: center; background-color: rgba(255,255,255,.75); padding: 10px; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; color: black;">
-												<?php
-												$saleprice = $vidrow["normalprice"];
-												if($vidrow["discountprice"] != ""){
-													$saleprice = $vidrow["discountprice"];
-												}
-												?>
-												<h2 style="font-size: 14px;"><?php echo shorten_text($vidrow["title"], 18, ' ...', false) ?></h2><h3 style="font-size: 20px; color: <?php echo $maincolor ?>"><?php echo $currencysymbol . $saleprice ?></h3>
-											</div>
+									<div class="filmblock" style="background: url(<?php echo $baseurl . $imagefile ?>) no-repeat center center; background-size: cover; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover;">
+										<div class="filmblocktitleholder">
+											<?php
+											$saleprice = $vidrow["normalprice"];
+											if($vidrow["discountprice"] != ""){
+												$saleprice = $vidrow["discountprice"];
+											}
+											?>
+											<h2 style="font-size: 14px;"><?php echo shorten_text($vidrow["title"], 18, ' ...', false) ?></h2><h3 style="font-size: 20px; font-weight: bold; color: <?php echo $maincolor ?>"><?php echo $currencysymbol . $saleprice ?></h3>
+											<a href="<?php echo $baseurl ?>?post=<?php echo $vidrow["postid"] ?>"><div class="morebutton"><?php echo uilang("MORE") ?> <i class="fa fa-arrow-right"></i></div></a>
 										</div>
-									</a>
+									</div>
+									
 									<?php
 
 								}
