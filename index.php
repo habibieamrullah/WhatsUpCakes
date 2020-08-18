@@ -268,9 +268,8 @@ include("uilang.php");
 							if($row["options"] != ""){
 								?>
 								<div id="productoptions" style="display: none"><?php echo $row["options"] ?></div>
-								<script src="<?php echo $baseurl ?>productoptions.js"></script>
 								<script>
-									moptions = JSON.parse($("#productoptions").html())
+									var moptions = JSON.parse($("#productoptions").html())
 									var productoptions = "<label>" + moptions[0].title + "</label>" 
 									productoptions += "<select>"
 									for(var i = 0; i < moptions[0].options.length; i++){
