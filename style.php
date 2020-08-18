@@ -47,13 +47,17 @@
 	}
 	
 	
-	input, textarea{
+	input, select, textarea{
 		box-sizing: border-box;
 		width: 100%;
 		padding: 20px;
 		border-radius: 5px;
 		margin-bottom: 20px;
 		border: 2px solid <?php echo $maincolor ?>;
+	}
+	
+	select{ 
+		outline: 2px solid <?php echo $maincolor ?>;
 	}
 	
 	input[type=submit]{

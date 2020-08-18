@@ -10,6 +10,7 @@ if(isset($_POST["editposttitle"]) && isset($_POST["id"])){
 	$normalprice = mysqli_real_escape_string($connection, $_POST["editnormalprice"]);
 	$discountprice = mysqli_real_escape_string($connection, $_POST["editdiscountprice"]);
 	$content = mysqli_real_escape_string($connection, $_POST["editpostcontent"]);
+	$moreoptions = mysqli_real_escape_string($connection, $_POST["moreoptions"]);
 	
 	if($posttitle != "" && $content != ""){
 		
@@ -59,7 +60,7 @@ if(isset($_POST["editposttitle"]) && isset($_POST["id"])){
 				$newpicture = $oldpicture;
 			}
 			
-			mysqli_query($connection, "UPDATE $tableposts SET title = '$posttitle', catid = $catid, content = '$content', picture = '$newpicture', normalprice='$normalprice', discountprice='$discountprice' WHERE id = $id");
+			mysqli_query($connection, "UPDATE $tableposts SET title = '$posttitle', catid = $catid, content = '$content', picture = '$newpicture', normalprice='$normalprice', discountprice='$discountprice', options='$moreoptions' WHERE id = $id");
 			echo "<div class='alert'>" .uilang("Post successfully updated."). "</div>";
 		
 		}

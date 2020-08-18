@@ -129,7 +129,7 @@ include("uilang.php");
 										<input class="fileinput" name="newpicture" type="file" accept="image/jpeg, image/png">
 										
 										<label><i class="fa fa-check-square-o"></i> <?php echo uilang("Add more options") ?></label>
-										<input id="moreoptions" name="moreoptions">
+										<input id="moreoptions" name="moreoptions" style="display: none">
 										<div id="moreoptionsvisual" style="margin-bottom: 10px;"></div>
 										<div id="moformbutton" class="buybutton" onclick="showmoform()"><i class="fa fa-plus"></i> <?php echo uilang("Add") ?></div>
 										<div id="moform" style="border: 1px solid black; border-radius: 6px; padding: 20px; display: none;">
@@ -155,74 +155,7 @@ include("uilang.php");
 										<input type="submit" value="<?php echo uilang("Submit") ?>" class="submitbutton">
 									</form>
 									
-									<script>
-										var moptions = []
-										
-										function addnewoptiontitle(){
-											
-											var nottl = $("#newoptiontitle").val()
-											if(nottl != ""){
-												moptions.push({ title : nottl , options : [] })
-												updatemovisual()
-												closemoform()
-												$("#moformbutton").hide()
-												editmop(0)
-											}
-											
-										}
-										
-										function editmop(i){
-											$("#moformedit").show()
-											$("#motitletoedit").html(moptions[i].title)
-										}
-										
-										function addcurrentmoitem(){
-											var moitem = $("#moitem").val()
-											var moprice = $("#moprice").val()
-											if(moitem != "" && moprice > 0){
-												moptions[0].options.push({ title : moitem, price : moprice})
-												$("#moitem").val("").focus()
-												$("#moprice").val(0)
-												updatemovisual()
-											}
-										}
-										
-										function showmoform(){
-											$("#moformbutton").hide()
-											$("#moform").show()
-										}
-										function closemoform(){
-											$("#moformbutton").show()
-											$("#moform").hide()
-										}
-										function closemoeditform(){
-											$("#moformedit").hide()
-										}
-										function updatemovisual(){
-											if(moptions.length == 1){
-												$("#moreoptionsvisual").html("")
-												var mocontent = ""
-												for(var i = 0; i < moptions.length; i++){
-													mocontent += "<div class='categoryblock'><div><i class='fa fa-check-square-o'></i> " + moptions[i].title + "<span onclick='editmop("+i+")'style='cursor: pointer; margin-left: 20px; font-size: 12px; color: black;'><i class='fa fa-edit'></i> <?php echo uilang("Edit") ?></span></div>"
-													if(moptions[i].options.length > 0){
-														for(var x = 0; x < moptions[i].options.length; x++){
-															mocontent += "<div style='font-size: 12px; padding: 10px;'><i class='fa fa-arrow-right'></i> " +moptions[i].options[x].title+ " (" +tSep(moptions[i].options[x].price)+ ")</div>"
-														}
-													}
-													mocontent += "</div>"
-												}
-												$("#moreoptionsvisual").append(mocontent)
-												$("#newoptiontitle").val("")
-												$("#moform").hide()
-												$("#moformbutton").hide()
-												$("#moreoptions").val(JSON.stringify(moptions))
-											}else{
-												$("#moreoptionsvisual").html("<?php echo uilang("There is no option has been added.") ?>")
-												$("#moformbutton").show()
-											}
-										}
-										updatemovisual()
-									</script>
+									
 									
 								</div>
 								<div class="progress" style="display: none">
@@ -562,10 +495,41 @@ include("uilang.php");
 											<br><br>
 											<label><i class="fa fa-image"></i> <?php echo uilang("Image File") ?></label>
 											<input class="fileinput" name="newpicture" type="file" accept="image/jpeg, image/png">
+											
+											<label><i class="fa fa-check-square-o"></i> <?php echo uilang("Add more options") ?></label>
+											<input id="moreoptions" name="moreoptions" value='<?php echo $row["options"] ?>' style="display: none;">
+											<div id="moreoptionsvisual" style="margin-bottom: 10px;"></div>
+											<div id="moformbutton" class="buybutton" onclick="showmoform()"><i class="fa fa-plus"></i> <?php echo uilang("Add") ?></div>
+											<div id="moform" style="border: 1px solid black; border-radius: 6px; padding: 20px; display: none;">
+												<label><i class="fa fa-plus"></i> <?php echo uilang("Add new option title:") ?></label>
+												<input placeholder="<?php echo uilang("Option Title") ?>" id="newoptiontitle">
+												<div class="buybutton" onclick="addnewoptiontitle()"><i class="fa fa-plus"></i> <?php echo uilang("Add") ?></div>
+												<div class="buybutton" onclick="closemoform()"><i class="fa fa-times"></i> <?php echo uilang("Close") ?></div>
+											</div>
+											<div id="moformedit" style="border: 1px solid black; border-radius: 6px; padding: 20px; display: none;">
+												<h2><i class="fa fa-check-square-o"></i> <?php echo uilang("Edit") ?> <span id="motitletoedit"></span></h2>
+												<div id="currentmochilds"></div>
+												<label><?php echo uilang("Add new item for this option") ?></label>
+												<input id="moitem" placeholder="<?php echo uilang("Add new item for this option") ?>">
+												<label><?php echo uilang("Product price when this option is selected") ?></label>
+												<input id="moprice" type="number" placeholder="<?php echo uilang("Price") ?>" value=0>
+												<div class="buybutton" onclick="addcurrentmoitem()"><i class="fa fa-plus"></i> <?php echo uilang("Add") ?></div>
+												<div class="buybutton" onclick="closemoeditform()"><i class="fa fa-times"></i> <?php echo uilang("Close") ?></div>
+											</div>
+											
+											<br>
+											<br>
 											<br>
 											<input name="id" value="<?php echo $row["id"] ?>" style="display: none;">
 											<input type="submit" value="<?php echo uilang("Update") ?>" class="submitbutton">
 										</form>
+										
+										<script>
+											setTimeout(function(){
+												moptions = JSON.parse($("#moreoptions").val())
+												updatemovisual()
+											}, 1000)
+										</script>
 									</div>
 									<div class="progress" style="display: none">
 									<div id="upploadprogresstitle">
@@ -681,6 +645,7 @@ include("uilang.php");
 					</div>
 				</div>
 				
+				<script src="<?php echo $baseurl ?>productoptions.js"></script>
 				
 				<?php
 			}else{
@@ -738,6 +703,7 @@ include("uilang.php");
 			setTimeout(function(){
 				$(".alert").slideUp()
 			}, 2000)
+			
 		</script>
 	</body>
 </html>

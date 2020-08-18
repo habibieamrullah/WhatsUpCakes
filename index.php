@@ -262,9 +262,29 @@ include("uilang.php");
 						<div class="randomvidblock orderblock">
 							<h2><?php echo uilang("Order") ?></h2>
 							<label><i class="fa fa-plus"></i> <?php echo uilang("Quantity") ?></label>
-							<input id="currentQ" type="number" value=1 onkeyup="updateCurrentTotal()">
+							<input id="currentQ" type="number" value=1 onkeyup="updateCurrentTotal()" style="border-radius: 0px;">
+							
+							<?php
+							if($row["options"] != ""){
+								?>
+								<div id="productoptions" style="display: none"><?php echo $row["options"] ?></div>
+								<script src="<?php echo $baseurl ?>productoptions.js"></script>
+								<script>
+									moptions = JSON.parse($("#productoptions").html())
+									var productoptions = "<label>" + moptions[0].title + "</label>" 
+									productoptions += "<select>"
+									for(var i = 0; i < moptions[0].options.length; i++){
+										productoptions += "<option>" + moptions[0].options[i].title + "</option>"
+									}
+									productoptions += "</select>"
+									$("#productoptions").html(productoptions).show()
+								</script>
+								<?php
+							}
+							?>
+							
 							<label><i class="fa fa-file-text-o"></i> <?php echo uilang("Notes") ?></label>
-							<textarea id="ordernotes" placeholder="<?php echo uilang("Write some notes...") ?>"></textarea>
+							<textarea id="ordernotes" placeholder="<?php echo uilang("Write some notes...") ?>" style="border-radius: 0px;"></textarea>
 							<p id="currenttotal" style="font-size: 30px;">Rp. 12345</p>
 							<div class="buybutton" onclick="addtocart()"><i class="fa fa-shopping-cart"></i> <?php echo uilang("Add to Cart") ?></div>
 							
