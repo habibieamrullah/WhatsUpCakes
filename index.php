@@ -105,13 +105,18 @@ include("uilang.php");
 							<!-- Thumbnail -->
 							<div class="filmblock" style="background: url(<?php echo $baseurl . $imagefile ?>) no-repeat center center; background-size: cover; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover;">
 								<div class="filmblocktitleholder">
+									
 									<?php
 									$saleprice = $vidrow["normalprice"];
-									if($vidrow["discountprice"] != ""){
+									$oldprice = "";
+									if($vidrow["discountprice"] != 0){
 										$saleprice = $vidrow["discountprice"];
+										$oldprice = "<span style='margin: 0px; margin-top: 20px; text-decoration: line-through; font-size: 12px; margin-right: 10px; color: gray;'>" . $currencysymbol . number_format($vidrow["normalprice"],2) . "</span>";
 									}
 									?>
-									<h2 style="font-size: 14px;"><?php echo shorten_text($vidrow["title"], 25, ' ...', false) ?></h2><h3 style="font-size: 20px; font-weight: bold; color: <?php echo $maincolor ?>"><?php echo $currencysymbol . $saleprice ?></h3>
+									
+									
+									<h2 style="font-size: 14px;"><?php echo shorten_text($vidrow["title"], 25, ' ...', false) ?></h2><h3 style="font-size: 20px; font-weight: bold; color: <?php echo $maincolor ?>"><?php echo $oldprice . $currencysymbol . number_format($saleprice,2) ?></h3>
 									<a href="<?php echo $baseurl ?>?post=<?php echo $vidrow["postid"] ?>"><div class="morebutton"><?php echo uilang("MORE") ?> <i class="fa fa-arrow-right"></i></div></a>
 								</div>
 							</div>
@@ -163,13 +168,18 @@ include("uilang.php");
 								<!-- Thumbnail -->
 								<div class="filmblock" style="background: url(<?php echo $baseurl . $imagefile ?>) no-repeat center center; background-size: cover; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover;">
 									<div class="filmblocktitleholder">
+										
 										<?php
 										$saleprice = $vidrow["normalprice"];
-										if($vidrow["discountprice"] != ""){
+										$oldprice = "";
+										if($vidrow["discountprice"] != 0){
 											$saleprice = $vidrow["discountprice"];
+											$oldprice = "<span style='margin: 0px; margin-top: 20px; text-decoration: line-through; font-size: 12px; margin-right: 10px; color: gray;'>" . $currencysymbol . number_format($vidrow["normalprice"],2) . "</span>";
 										}
 										?>
-										<h2 style="font-size: 14px;"><?php echo shorten_text($vidrow["title"], 25, ' ...', false) ?></h2><h3 style="font-size: 20px; font-weight: bold; color: <?php echo $maincolor ?>"><?php echo $currencysymbol . $saleprice ?></h3>
+										
+										
+										<h2 style="font-size: 14px;"><?php echo shorten_text($vidrow["title"], 25, ' ...', false) ?></h2><h3 style="font-size: 20px; font-weight: bold; color: <?php echo $maincolor ?>"><?php echo $oldprice . $currencysymbol . number_format($saleprice) ?></h3>
 										<a href="<?php echo $baseurl ?>?post=<?php echo $vidrow["postid"] ?>"><div class="morebutton"><?php echo uilang("MORE") ?> <i class="fa fa-arrow-right"></i></div></a>
 									</div>
 								</div>
@@ -213,13 +223,17 @@ include("uilang.php");
 								?>
 								
 								<div id="productpic" style="background: url(<?php echo $picture ?>) no-repeat center center; background-size: cover; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover;"></div>
+								
 								<?php
 								$saleprice = $row["normalprice"];
-								if($row["discountprice"] != ""){
+								$oldprice = "";
+								if($row["discountprice"] != 0){
 									$saleprice = $row["discountprice"];
+									$oldprice = "<span style='margin: 0px; margin-top: 20px; text-decoration: line-through; font-size: 20px; margin-right: 10px; color: gray;'>" . $currencysymbol . number_format($row["normalprice"],2) . "</span>";
 								}
 								?>
-								<h1><?php echo $row["title"] ?> <i class="fa fa-angle-double-right"></i> <?php echo $currencysymbol . $saleprice ?></h1>
+								
+								<h1><?php echo $row["title"] ?> <i class="fa fa-angle-double-right"></i> <?php echo $oldprice . $currencysymbol . number_format($saleprice,2) ?></h1>
 								<h5 style="color: <?php echo $maincolor ?>"><i class="fa fa-calendar" style="width: 15px;"></i> <?php echo $postdate ?> <a href="<?php echo $baseurl ?>?category=<?php echo urlencode(showcatname($row["catid"])) ?>"><i class="fa fa-tag" style="margin-left: 15px; width: 15px;"></i> <?php echo showCatName($row["catid"]) ?></a></h5>
 								<div>
 									<?php echo $row["content"] ?>
@@ -354,16 +368,20 @@ include("uilang.php");
 											$imagefile = "pictures/" . $imagefile;
 										}
 										
+
 										$saleprice = $row["normalprice"];
-										if($row["discountprice"] != ""){
+										$oldprice = "";
+										if($row["discountprice"] != 0){
 											$saleprice = $row["discountprice"];
+											$oldprice = "<span style='margin: 0px; margin-top: 20px; text-decoration: line-through; font-size: 12px; margin-right: 10px; color: gray;'>" . $currencysymbol . number_format($row["normalprice"],2) . "</span>";
 										}
+
 										
 										?>
 										<div class="lilimage" style="background: url(<?php echo $baseurl . $imagefile ?>) no-repeat center center; background-size: cover; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover;"></div>
 										<div class="lildescr">
 											<div class="shorttext" style="font-size: 18px; font-weight: bold;">
-												<?php echo $row["title"] ?> <i class="fa fa-angle-double-right"></i> <?php echo $currencysymbol . $saleprice ?>
+												<?php echo $row["title"] ?><br><i class="fa fa-angle-double-right"></i> <?php echo $oldprice. $currencysymbol . number_format($saleprice,2) ?>
 											</div>
 											<div style="padding-left: 14px;">
 												<p><?php echo shorten_text(strip_tags($row["content"]), 75, ' ...', false) ?></p>
@@ -410,13 +428,17 @@ include("uilang.php");
 									<a href="<?php echo $baseurl ?>?post=<?php echo $row["postid"] ?>">
 										<div class="brightonhover">
 											<div class="smallinmobile w75">
+												
 												<?php
 												$saleprice = $row["normalprice"];
-												if($row["discountprice"] != ""){
+												$oldprice = "";
+												if($row["discountprice"] != 0){
 													$saleprice = $row["discountprice"];
+													$oldprice = "<span style='margin: 0px; margin-top: 20px; text-decoration: line-through; font-size: 12px; margin-right: 10px; color: gray;'>" . $currencysymbol . number_format($row["normalprice"],2) . "</span>";
 												}
 												?>
-												<h2><?php echo shorten_text($row["title"], 21, ' ...', true) . " <i class='fa fa-angle-double-right'></i> " . $currencysymbol . $saleprice ?></h2>
+												
+												<h2><?php echo shorten_text($row["title"], 21, ' ...', true) . " <i class='fa fa-angle-double-right'></i> " . $oldprice . $currencysymbol . number_format($saleprice, 2) ?></h2>
 												<p><?php echo shorten_text(strip_tags($row["content"]), 75, ' ...', false) ?></p>
 											</div>
 											<div class="smallinmobile w25" style="vertical-align: middle; text-align: center;">
@@ -467,13 +489,18 @@ include("uilang.php");
 									<!-- Thumbnail -->
 									<div class="filmblock" style="background: url(<?php echo $baseurl . $imagefile ?>) no-repeat center center; background-size: cover; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover;">
 										<div class="filmblocktitleholder">
+											
 											<?php
 											$saleprice = $vidrow["normalprice"];
-											if($vidrow["discountprice"] != ""){
+											$oldprice = "";
+											if($vidrow["discountprice"] != 0){
 												$saleprice = $vidrow["discountprice"];
+												$oldprice = "<span style='margin: 0px; margin-top: 20px; text-decoration: line-through; font-size: 12px; margin-right: 10px; color: gray;'>" . $currencysymbol . number_format($vidrow["normalprice"], 2) . "</span>";
 											}
 											?>
-											<h2 style="font-size: 14px;"><?php echo shorten_text($vidrow["title"], 25, ' ...', false) ?></h2><h3 style="font-size: 20px; font-weight: bold; color: <?php echo $maincolor ?>"><?php echo $currencysymbol . $saleprice ?></h3>
+											
+											
+											<h2 style="font-size: 14px;"><?php echo shorten_text($vidrow["title"], 25, ' ...', false) ?></h2><h3 style="font-size: 20px; font-weight: bold; color: <?php echo $maincolor ?>"><?php echo $oldprice . $currencysymbol . number_format($saleprice,2) ?></h3>
 											<a href="<?php echo $baseurl ?>?post=<?php echo $vidrow["postid"] ?>"><div class="morebutton"><?php echo uilang("MORE") ?> <i class="fa fa-arrow-right"></i></div></a>
 										</div>
 									</div>
