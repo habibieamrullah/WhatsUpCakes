@@ -87,6 +87,7 @@ include("uilang.php");
 								<a href="<?php echo $baseurl ?>admin.php"><div class="adminleftbaritem"><i class="fa fa-home" style="width: 30px;"></i> <?php echo uilang("Home") ?></div></a>
 								<a href="<?php echo $baseurl ?>admin.php?newpost"><div class="adminleftbaritem"><i class="fa fa-plus" style="width: 30px;"></i> <?php echo uilang("New Post") ?></div></a>
 								<a href="<?php echo $baseurl ?>admin.php?categories"><div class="adminleftbaritem"><i class="fa fa-tag" style="width: 30px;"></i> <?php echo uilang("Categories") ?></div></a>
+								<a href="<?php echo $baseurl ?>admin.php?orders"><div class="adminleftbaritem"><i class="fa fa-file-text" style="width: 30px;"></i> <?php echo uilang("Orders") ?></div></a>
 								<a href="<?php echo $baseurl ?>admin.php?settings"><div class="adminleftbaritem"><i class="fa fa-cogs" style="width: 30px;"></i> <?php echo uilang("Settings") ?></div></a>
 								<a href="<?php echo $baseurl ?>admin.php?logout"><div class="adminleftbaritem"><i class="fa fa-sign-out" style="width: 30px;"></i> <?php echo uilang("Logout") ?></div></a>
 								
@@ -282,6 +283,7 @@ include("uilang.php");
 									$maincolor = mysqli_real_escape_string($connection, $_POST["maincolor"]);
 									$secondcolor = mysqli_real_escape_string($connection, $_POST["secondcolor"]);
 									$about = mysqli_real_escape_string($connection, $_POST["about"]);
+									$adminwhatsapp = mysqli_real_escape_string($connection, $_POST["adminwhatsapp"]);
 									$language = mysqli_real_escape_string($connection, $_POST["language"]);
 									$currencysymbol = mysqli_real_escape_string($connection, $_POST["currencysymbol"]);
 									$baseurl = mysqli_real_escape_string($connection, $_POST["baseurl"]);
@@ -290,6 +292,7 @@ include("uilang.php");
 									mysqli_query($connection, "UPDATE $tableconfig SET value = '$maincolor' WHERE config = 'maincolor'");
 									mysqli_query($connection, "UPDATE $tableconfig SET value = '$secondcolor' WHERE config = 'secondcolor'");
 									mysqli_query($connection, "UPDATE $tableconfig SET value = '$about' WHERE config = 'about'");
+									mysqli_query($connection, "UPDATE $tableconfig SET value = '$adminwhatsapp' WHERE config = 'adminwhatsapp'");
 									mysqli_query($connection, "UPDATE $tableconfig SET value = '$language' WHERE config = 'language'");
 									mysqli_query($connection, "UPDATE $tableconfig SET value = '$currencysymbol' WHERE config = 'currencysymbol'");
 									mysqli_query($connection, "UPDATE $tableconfig SET value = '$baseurl' WHERE config = 'baseurl'");
@@ -375,6 +378,12 @@ include("uilang.php");
 											?>
 											<label><i class="fa fa-money"></i> <?php echo uilang("Currency Symbol") ?></label>
 											<input placeholder="<?php echo uilang("Currency Symbol") ?>" name="currencysymbol" value="<?php echo $row["value"] ?>">
+											<?php
+											break;
+										case "adminwhatsapp" :
+											?>
+											<label><i class="fa fa-whatsapp"></i> <?php echo uilang("Admin WhatsApp Phone Number") ?></label>
+											<input placeholder="<?php echo uilang("Admin WhatsApp Phone Number") ?>" name="adminwhatsapp" value="<?php echo $row["value"] ?>">
 											<?php
 											break;
 										case "about" :
@@ -567,6 +576,41 @@ include("uilang.php");
 									}); 
 								</script>
 								<?php
+								}
+							}
+							//
+							else if(isset($_GET["orders"])){
+								?>
+								<h1><?php echo uilang("Order") ?></h1>
+								<?php
+								$sql = "SELECT * FROM $tablemessages ORDER BY id DESC";
+								$result = mysqli_query($connection, $sql);
+								if($result){
+									if(mysqli_num_rows($result) == 0){
+										echo "<p>" . uilang("There is no order recorded.") . "</p>";
+									}else{
+										?>
+										<table style="width: 100%">
+											<tr>
+												<th style="width: 100px;"><?php echo uilang("Date") ?></th>
+												<th style="width: 100px;"><?php echo uilang("Order") ?></th>
+											</tr>
+											<?php
+											while($row = mysqli_fetch_assoc($result)){
+												$mil = $row["date"];
+												$seconds = $mil / 1000;
+												$postdate = date("d-m-Y", $seconds);
+												?>
+												<tr>
+													<td><?php echo $postdate ?></td>
+													<td><?php echo nl2br($row["message"]) ?></td>
+												</tr>
+												<?php
+											}
+											?>
+										</table>
+										<?php
+									}
 								}
 							}
 							//home

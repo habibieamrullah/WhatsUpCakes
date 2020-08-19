@@ -20,6 +20,7 @@ $connection->set_charset("utf8");
 $tableconfig = $databaseprefix . "config";
 $tableposts = $databaseprefix . "posts";
 $tablecategories = $databaseprefix . "categories";
+$tablemessages = $databaseprefix . "messages";
 
 //Creating tables - config
 mysqli_query($connection, "CREATE TABLE IF NOT EXISTS $tableconfig (
@@ -48,6 +49,13 @@ id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 category VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
 )");
 
+//Creating tables - messages
+mysqli_query($connection, "CREATE TABLE IF NOT EXISTS $tablemessages (
+id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+date VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+message VARCHAR(300) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
+)");
+
 //Default website config values
 $websitetitle = "WhatsUp Cakes";
 $maincolor = "#3e4fdb";
@@ -56,6 +64,7 @@ $about = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmo
 $baseurl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 $language = "en";
 $logo = "";
+$adminwhatsapp = "6287880334339";
 $currencysymbol = "$";
 $baseurl = str_replace("index.php", "", $baseurl);
 
@@ -71,6 +80,7 @@ if(mysqli_num_rows($result) == 0){
 	$sql .= "INSERT INTO $tableconfig (config, value) VALUES ('secondcolor', '$secondcolor');";
 	$sql .= "INSERT INTO $tableconfig (config, value) VALUES ('about', '$about');";
 	$sql .= "INSERT INTO $tableconfig (config, value) VALUES ('language', '$language');";
+	$sql .= "INSERT INTO $tableconfig (config, value) VALUES ('adminwhatsapp', '$adminwhatsapp');";
 	$sql .= "INSERT INTO $tableconfig (config, value) VALUES ('logo', '$logo');";
 	$sql .= "INSERT INTO $tableconfig (config, value) VALUES ('currencysymbol', '$currencysymbol');";
 	$sql .= "INSERT INTO $tableconfig (config, value) VALUES ('baseurl', '$baseurl');";
@@ -97,6 +107,9 @@ if(mysqli_num_rows($result) == 0){
 				break;
 			case "baseurl" :
 				$baseurl = $row["value"];
+				break;
+			case "adminwhatsapp" :
+				$adminwhatsapp = $row["value"];
 				break;
 			case "logo" :
 				$logo = $row["value"];

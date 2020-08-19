@@ -522,7 +522,7 @@ include("uilang.php");
 				<div class="flblock">
 					<h2><i class="fa fa-credit-card"></i> <?php echo uilang("Total") ?></h2>
 					<p id="grandtotal" style="font-size: 30px">Rp. 0</p>
-					<div class="buybutton" style="border: 1px solid white"><i class="fa fa-whatsapp"></i> <?php echo uilang("Order Now") ?></div>
+					<div class="buybutton" style="border: 1px solid white" onclick="chatnow()"><i class="fa fa-whatsapp"></i> <?php echo uilang("Order Now") ?></div>
 				</div>
 			</div>
 			
@@ -692,6 +692,35 @@ include("uilang.php");
 			}
 			
 			reloadcartdata()
+			
+			
+			function chatnow(){
+				if(appdata.orderitems.length){
+					var message = "<?php echo uilang("Hi") . " " . $websitetitle . "," ?> "
+					var grandtotal = 0
+					message += "<?php echo uilang("I would like to order:") ?>\n\n"
+					for(var i = 0; i < appdata.orderitems.length; i++){
+						message += "-\> " + appdata.orderitems[i].title + " * " + appdata.orderitems[i].quantity + " = <?php echo $currencysymbol ?>" + tSep(appdata.orderitems[i].subtotal.toFixed(2)) + "\n"
+							
+						if(appdata.orderitems[i].options != "")
+							message += "---\>\> <?php echo uilang("Option") ?>: " + appdata.orderitems[i].options + "\n"
+						if(appdata.orderitems[i].notes != "")
+							message += "---\>\> <?php echo uilang("Notes") ?>: " + appdata.orderitems[i].notes + "\n"
+						grandtotal += appdata.orderitems[i].subtotal
+						message += "\n"
+					}
+					message += "Grand Total: <?php echo $currencysymbol ?>" + tSep(grandtotal.toFixed(2)) + "\n\n<?php echo uilang("Thank you.") ?>"
+					var omuri = encodeURI(message)
+					$.post("<?php echo $baseurl ?>ordernotes.php", {
+						"message" : message + "\n\nFrom " + appdata.buyerinfo.name + " - " + appdata.buyerinfo.email + " - " + appdata.buyerinfo.mobile
+					}, function(data){
+						//alert(data)
+						location.href = "https://wa.me/<?php echo $adminwhatsapp ?>?text=" + omuri
+					})
+				}else{
+					alert("<?php echo uilang("You did not add any product.") ?>")
+				}
+			}
 			
 		</script>
 	</body>
