@@ -490,7 +490,7 @@ include("uilang.php");
 												$oldprice = "";
 												if($row["discountprice"] != 0){
 													$saleprice = $row["discountprice"];
-													$oldprice = "<span style='margin: 0px; margin-top: 20px; text-decoration: line-through; font-size: 12px; margin-right: 10px; color: gray;'>" . $currencysymbol . number_format($row["normalprice"],2) . "</span>";
+													$oldprice = "<span style='margin: 0px; margin-top: 20px; text-decoration: line-through; font-size: 12px; margin-right: 10px; color: ".$maincolor.";'>" . $currencysymbol . number_format($row["normalprice"],2) . "</span>";
 												}
 												?>
 												
