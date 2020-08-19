@@ -136,6 +136,62 @@ include("uilang.php");
 			}
 		}
 		
+		//all
+		else if(isset($_GET["all"])){
+
+			$sql = "SELECT * FROM $tablecategories";
+			$result = mysqli_query($connection, $sql);
+			if(mysqli_num_rows($result) > 0){
+				$row = mysqli_fetch_assoc($result);
+				$catid = $row["id"];
+				$vidsql = "SELECT * FROM $tableposts WHERE catid = '$catid' ORDER BY id DESC";
+				$vidresult = mysqli_query($connection, $vidsql);
+				if(mysqli_num_rows($vidresult) > 0){
+					?>
+					<div class="section">
+						<div class="catseparator">
+							<div style="display: inline-block;"><h1 style="font-size: 21px;"><i class="fa fa-tag" style="color: <?php echo $maincolor ?>;"></i> <?php echo uilang("All") ?></h1></div>
+						</div>
+					</div>
+					<div class="section gridcontainerunscrollable">
+						<?php
+						while($vidrow = mysqli_fetch_assoc($vidresult)){
+							$imagefile = $vidrow["picture"];
+							if($imagefile == ""){
+								$imagefile = "images/defaultimg.jpg";
+							}else{
+								$imagefile = "pictures/" . $imagefile;
+							}
+
+							?>
+							<!-- Thumbnail -->
+							<div class="filmblock" style="background: url(<?php echo $baseurl . $imagefile ?>) no-repeat center center; background-size: cover; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover;">
+								<div class="filmblocktitleholder">
+									
+									<?php
+									$saleprice = $vidrow["normalprice"];
+									$oldprice = "";
+									if($vidrow["discountprice"] != 0){
+										$saleprice = $vidrow["discountprice"];
+										$oldprice = "<span style='margin: 0px; margin-top: 20px; text-decoration: line-through; font-size: 12px; margin-right: 10px; color: gray;'>" . $currencysymbol . number_format($vidrow["normalprice"],2) . "</span>";
+									}
+									?>
+									
+									
+									<h2 style="font-size: 14px;"><?php echo shorten_text($vidrow["title"], 25, ' ...', false) ?></h2><h3 style="font-size: 20px; font-weight: bold; color: <?php echo $maincolor ?>"><?php echo $oldprice . $currencysymbol . number_format($saleprice) ?></h3>
+									<a href="<?php echo $baseurl ?>?post=<?php echo $vidrow["postid"] ?>"><div class="morebutton"><?php echo uilang("MORE") ?> <i class="fa fa-arrow-right"></i></div></a>
+								</div>
+							</div>
+							<?php
+
+						}
+						?>
+					</div>
+					<?php
+				}
+			}
+		}
+		
 		//category
 		else if(isset($_GET["category"])){
 			$category = urldecode(mysqli_real_escape_string($connection, $_GET["category"]));
@@ -276,7 +332,7 @@ include("uilang.php");
 						<div class="randomvidblock orderblock">
 							<h2><?php echo uilang("Order") ?></h2>
 							<label><i class="fa fa-plus"></i> <?php echo uilang("Quantity") ?></label>
-							<input id="currentQ" type="number" value=1 onkeyup="updateCurrentTotal()" style="border-radius: 0px;">
+							<input id="currentQ" type="number" value=1 onchange="updateCurrentTotal()" style="border-radius: 0px;">
 							
 							<?php
 							if($row["options"] != ""){
@@ -337,12 +393,12 @@ include("uilang.php");
 								updateCurrentTotal()
 								
 								function addtocart(){
-									//currentitem.notes = addslashes($("#ordernotes").val())
 									currentitem.notes = $("#ordernotes").val()
 									currentitem.subtotal = currentTotal
 									appdata.orderitems.push(currentitem)
 									savedata()
 									reloadcartdata()
+									loaddata()
 									$([document.documentElement, document.body]).animate({
 										scrollTop: $(".shoppingcart").offset().top
 									}, 1000);
@@ -671,12 +727,19 @@ include("uilang.php");
 			if(localStorage.getItem("<?php echo $websitetitle ?>") === null){
 				savedata()
 			}else{
+				loaddata()
+			}
+			
+			function loaddata(){
 				appdata = JSON.parse(localStorage.getItem("<?php echo $websitetitle ?>"))
 			}
+
 			
 			function savedata(){
 				localStorage.setItem("<?php echo $websitetitle ?>", JSON.stringify(appdata))
 			}
+			
+			loaddata()
 			
 			function savebuyerinfo(){
 				appdata.buyerinfo.name = $("#biname").val()
